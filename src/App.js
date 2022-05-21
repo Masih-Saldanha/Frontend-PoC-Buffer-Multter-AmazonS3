@@ -8,7 +8,7 @@ export default function App() {
 
     function enviarProduto(e) {
         e.preventDefault();
-        const url = "http://localhost:5000/produtos";
+        const url = "https://poc-buffer.herokuapp.com/produtos";
         const promise = axios.post(url, { Produto: produto, Quantidade: parseInt(quantidade) });
         promise.then(response => {
             alert(response.data);
@@ -19,7 +19,7 @@ export default function App() {
     }
 
     function baixarLista() {
-        const url = "http://localhost:5000/produtos";
+        const url = "https://poc-buffer.herokuapp.com/produtos";
         const promise = axios.get(url);
         promise.then(response => {
             setListaDeProdutos(response.data);
