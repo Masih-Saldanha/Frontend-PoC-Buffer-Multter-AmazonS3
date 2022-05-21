@@ -4,12 +4,13 @@ import axios from "axios";
 export default function App() {
     const [produto, setProduto] = useState("");
     const [quantidade, setQuantidade] = useState(0);
+    const [arquivo, setArquivo] = useState();
     const [listaDeProdutos, setListaDeProdutos] = useState([]);
 
     function enviarProduto(e) {
         e.preventDefault();
         const url = "https://poc-buffer.herokuapp.com/produtos";
-        const promise = axios.post(url, { Produto: produto, Quantidade: parseInt(quantidade) });
+        const promise = axios.post(url, { Produto: produto, Quantidade: parseInt(quantidade), Arquivo: arquivo });
         promise.then(response => {
             alert(response.data);
         });
@@ -19,6 +20,7 @@ export default function App() {
     }
 
     function baixarLista() {
+        console.log(arquivo)
         const url = "https://poc-buffer.herokuapp.com/produtos";
         const promise = axios.get(url);
         promise.then(response => {
@@ -45,6 +47,11 @@ export default function App() {
                     value={quantidade}
                     onChange={(e) => setQuantidade(e.target.value)}
                 />
+                <input
+                    type="file"
+                    value={arquivo}
+                    onChange={(e) => setArquivo(e.target.value)}
+                />
                 <button type="submit">Enviar</button>
             </form>
             <h1>Abaixo segue a lista de produtos do banco de dados:</h1>
@@ -54,9 +61,12 @@ export default function App() {
                     :
                     <ul>
                         {listaDeProdutos.map((produto, index) => {
-                            const { Produto, Quantidade } = produto;
+                            const { Produto, Quantidade, Arquivo } = produto;
                             return (
-                                <li key={index}>- {parseInt(Quantidade)} unidades de {Produto}</li>
+                                <>
+                                    <li key={index}>- {parseInt(Quantidade)} unidades de {Produto} - {Arquivo}</li>
+                                    <img src={Arquivo} />
+                                </>
                             )
                         })}
                     </ul>
