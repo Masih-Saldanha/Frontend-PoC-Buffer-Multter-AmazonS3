@@ -2,29 +2,47 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function App() {
-    const [produto, setProduto] = useState("");
-    const [quantidade, setQuantidade] = useState(0);
-    const [arquivo, setArquivo] = useState();
-    const [listaDeProdutos, setListaDeProdutos] = useState([]);
+    const [nome, setNome] = useState("");
+    const [idade, setIdade] = useState(0);
+    const [listaDeUsuarios, setListaDeUsuarios] = useState([]);
 
-    function enviarProduto(e) {
-        e.preventDefault();
-        const url = "https://poc-buffer.herokuapp.com/produtos";
-        const promise = axios.post(url, { Produto: produto, Quantidade: parseInt(quantidade), Arquivo: arquivo });
-        promise.then(response => {
-            alert(response.data);
-        });
-        promise.catch(error => {
-            alert(error.response.data);
-        });
+    const [foto, setFoto] = useState();
+
+    // function enviarUsuario(e) {
+    //     e.preventDefault();
+    //     // const url = "https://poc-buffer.herokuapp.com/usuarios";
+    //     const url = "http://localhost:5000/usuarios";
+    //     const config = {
+    //         headers: {
+    //             encType: `multipart/form-data`,
+    //         },
+    //     };
+    //     const promise = axios.post(url, { nome, idade: parseInt(idade) }, config);
+    //     promise.then(response => {
+    //         alert(response.data);
+    //     });
+    //     promise.catch(error => {
+    //         alert(error.response.data);
+    //     });
+    // }
+
+    const enviar = event => {
+        const data = new FormData();
+        data.append("nome", nome);
+        data.append("idade", idade);
+        data.append("foto", foto);
+
+        const promise = axios.post("http://localhost:5000/usuarios", data);
+        promise.then(res => console.log(res));
+        promise.catch(err => console.log(err));
     }
 
     function baixarLista() {
-        console.log(arquivo)
-        const url = "https://poc-buffer.herokuapp.com/produtos";
+        console.log(foto)
+        const url = "http://localhost:5000/usuarios";
         const promise = axios.get(url);
         promise.then(response => {
-            setListaDeProdutos(response.data);
+            setListaDeUsuarios(response.data);
         });
         promise.catch(error => {
             alert(error.response.data);
@@ -33,40 +51,46 @@ export default function App() {
     return (
         <>
             <h1>Bem vindos à PoC de Buffer e upload de arquivos com Multer</h1>
-            <h2>Digite o nome e quantidade do produto que deseja armazenar no banco de dados:</h2>
-            <form onSubmit={enviarProduto}>
-                <input
-                    type="text"
-                    placeholder="Nome do Produto"
-                    value={produto}
-                    onChange={(e) => setProduto(e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Quantidade"
-                    value={quantidade}
-                    onChange={(e) => setQuantidade(e.target.value)}
-                />
-                <input
-                    type="file"
-                    value={arquivo}
-                    onChange={(e) => setArquivo(e.target.value)}
-                />
-                <button type="submit">Enviar</button>
+            <h2>Digite o nome, idade e foto do usuário que deseja armazenar no banco de dados:</h2>
+
+            {/* VERSÃO 1 ARQUIVO DE UPLOAD APENAS */}
+            {/* <form action="http://localhost:5000/usuarios" method="post" encType="multipart/form-data"> */}
+            {/* <input type="string" name="nome" />
+                <input type="number" name="idade" /> */}
+            {/* <input type="string" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+            <input type="number" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
+            <input type="file" name="foto" />
+            <button type="submit" >Enviar</button>
+            </form> */}
+
+            {/* VERSÃO VÁRIOS ARQUIVOS DE UPLOAD */}
+            {/* <form action="http://localhost:5000/usuarios/maisfotos" method="post" encType="multipart/form-data"> */}
+            {/* <input type="string" name="nome" />
+                <input type="number" name="idade" /> */}
+            {/* <input type="string" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} /> */}
+            {/* <input type="number" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} /> */}
+            {/* <input type="file" name="foto" multiple /> */}
+            {/* <button type="submit" >Enviar</button> */}
+            {/* </form> */}
+
+            {/* VERSÃO COM FUNÇÃO DE ENVIO */}
+            <form action="#">
+                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                <input type="file" id="foto" name="foto" onChange={(e) => setFoto(e.target.files[0])} />
             </form>
-            <h1>Abaixo segue a lista de produtos do banco de dados:</h1>
+            <button onClick={enviar} >Enviar</button>
+
+            <h1>Abaixo segue a lista de usuários do banco de dados:</h1>
             {
-                listaDeProdutos.length === 0 ?
-                    <h2>Lista de produtos vazia! Clique no Botão abaixo para abastecer a lista</h2>
+                listaDeUsuarios.length === 0 ?
+                    <h2>Lista de usuários vazia! Clique no Botão abaixo para abastecer a lista</h2>
                     :
                     <ul>
-                        {listaDeProdutos.map((produto, index) => {
-                            const { Produto, Quantidade, Arquivo } = produto;
+                        {listaDeUsuarios.map((usuario, index) => {
+                            const { nome, idade } = usuario;
                             return (
-                                <>
-                                    <li key={index}>- {parseInt(Quantidade)} unidades de {Produto} - {Arquivo}</li>
-                                    <img src={Arquivo} />
-                                </>
+                                <li key={index}>- {nome} - {parseInt(idade)} anos de idade</li>
                             )
                         })}
                     </ul>
