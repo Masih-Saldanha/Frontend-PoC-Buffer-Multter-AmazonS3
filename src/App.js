@@ -8,23 +8,18 @@ export default function App() {
 
     const [foto, setFoto] = useState();
 
-    // function enviarUsuario(e) {
-    //     e.preventDefault();
-    //     // const url = "https://poc-buffer.herokuapp.com/usuarios";
-    //     const url = "http://localhost:5000/usuarios";
-    //     const config = {
-    //         headers: {
-    //             encType: `multipart/form-data`,
-    //         },
-    //     };
-    //     const promise = axios.post(url, { nome, idade: parseInt(idade) }, config);
-    //     promise.then(response => {
-    //         alert(response.data);
-    //     });
-    //     promise.catch(error => {
-    //         alert(error.response.data);
-    //     });
-    // }
+    function enviarUsuario(e) {
+        e.preventDefault();
+        // const url = "https://poc-buffer.herokuapp.com/usuarios";
+        const url = "http://localhost:5000/usuarios";
+        const promise = axios.post(url, { nome, idade: parseInt(idade) });
+        promise.then(response => {
+            alert(response.data);
+        });
+        promise.catch(error => {
+            alert(error.response.data);
+        });
+    }
 
     const enviar = event => {
         const data = new FormData();
@@ -53,33 +48,41 @@ export default function App() {
             <h1>Bem vindos à PoC de Buffer e upload de arquivos com Multer</h1>
             <h2>Digite o nome, idade e foto do usuário que deseja armazenar no banco de dados:</h2>
 
+            {/* VERSÃO TRADICIONAL SEM UPLOAD */}
+            <h2>Versão tradicional, sem upload de arquivos</h2>
+            <form onSubmit={enviarUsuario}>
+                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                <input type="file" id="foto" name="foto" onChange={(e) => setFoto(e.target.files[0])} />
+                <button type="submit">Enviar</button>
+            </form>
+
             {/* VERSÃO 1 ARQUIVO DE UPLOAD APENAS */}
-            {/* <form action="http://localhost:5000/usuarios" method="post" encType="multipart/form-data"> */}
-            {/* <input type="string" name="nome" />
-                <input type="number" name="idade" /> */}
-            {/* <input type="string" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
-            <input type="number" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
-            <input type="file" name="foto" />
-            <button type="submit" >Enviar</button>
-            </form> */}
+            <h2>Envio de requisição diretamente do formulário - 1 Arquivo de upload apenas</h2>
+            <form action="http://localhost:5000/usuarios" method="post" encType="multipart/form-data">
+                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                <input type="file" id="foto" name="foto" />
+                <button type="submit" >Enviar</button>
+            </form>
 
             {/* VERSÃO VÁRIOS ARQUIVOS DE UPLOAD */}
-            {/* <form action="http://localhost:5000/usuarios/maisfotos" method="post" encType="multipart/form-data"> */}
-            {/* <input type="string" name="nome" />
-                <input type="number" name="idade" /> */}
-            {/* <input type="string" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} /> */}
-            {/* <input type="number" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} /> */}
-            {/* <input type="file" name="foto" multiple /> */}
-            {/* <button type="submit" >Enviar</button> */}
-            {/* </form> */}
+            <h2>Envio de requisição diretamente do formulário - Vários Arquivos de upload</h2>
+            <form action="http://localhost:5000/usuarios/maisfotos" method="post" encType="multipart/form-data">
+                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                <input type="file" id="foto" name="foto" multiple />
+                <button type="submit" >Enviar</button>
+            </form>
 
             {/* VERSÃO COM FUNÇÃO DE ENVIO */}
+            <h2>Versão com função de envio multipart/form-data</h2>
             <form action="#">
                 <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
                 <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
                 <input type="file" id="foto" name="foto" onChange={(e) => setFoto(e.target.files[0])} />
+                <button onClick={enviar} >Enviar</button>
             </form>
-            <button onClick={enviar} >Enviar</button>
 
             <h1>Abaixo segue a lista de usuários do banco de dados:</h1>
             {
