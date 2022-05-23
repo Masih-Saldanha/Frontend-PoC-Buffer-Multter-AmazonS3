@@ -23,6 +23,8 @@ export default function App() {
     }
 
     const enviar = event => {
+        event.preventDefault();
+        
         const data = new FormData();
         data.append("nome", nome);
         data.append("idade", idade);
@@ -35,7 +37,8 @@ export default function App() {
         promise.catch(err => console.log(err));
     }
 
-    function baixarLista() {
+    function baixarLista(e) {
+        e.preventDefault();
         console.log(foto);
 
         const url = "https://poc-buffer.herokuapp.com/usuarios";
