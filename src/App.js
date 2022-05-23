@@ -59,7 +59,7 @@ export default function App() {
             {/* VERSÃO TRADICIONAL SEM UPLOAD */}
             <h2>Versão tradicional, sem upload de arquivos</h2>
             <form onSubmit={enviarUsuario}>
-                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="text" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
                 <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
                 <input type="file" id="foto" name="foto" onChange={(e) => setFoto(e.target.files[0])} />
                 <button type="submit">Enviar</button>
@@ -68,7 +68,7 @@ export default function App() {
             {/* VERSÃO 1 ARQUIVO DE UPLOAD APENAS */}
             <h2>Envio de requisição diretamente do formulário - 1 Arquivo de upload apenas</h2>
             <form action="https://poc-buffer.herokuapp.com/usuarios" method="post" encType="multipart/form-data">
-                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="text" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
                 <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
                 <input type="file" id="foto" name="foto" />
                 <button type="submit" >Enviar</button>
@@ -77,7 +77,7 @@ export default function App() {
             {/* VERSÃO VÁRIOS ARQUIVOS DE UPLOAD */}
             <h2>Envio de requisição diretamente do formulário - Vários Arquivos de upload</h2>
             <form action="https://poc-buffer.herokuapp.com/usuarios/maisfotos" method="post" encType="multipart/form-data">
-                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="text" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
                 <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
                 <input type="file" id="foto" name="foto" multiple />
                 <button type="submit" >Enviar</button>
@@ -86,7 +86,7 @@ export default function App() {
             {/* VERSÃO COM FUNÇÃO DE ENVIO */}
             <h2>Versão com função de envio multipart/form-data</h2>
             <form action="#">
-                <input type="string" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
+                <input type="text" id="nome" name="nome" placeholder="Nome do usuário" value={nome} onChange={(e) => setNome(e.target.value)} />
                 <input type="number" id="idade" name="idade" placeholder="Idade do usuário" value={idade} onChange={(e) => setIdade(e.target.value)} />
                 <input type="file" id="foto" name="foto" onChange={(e) => setFoto(e.target.files[0])} />
                 <button onClick={enviar} >Enviar</button>
