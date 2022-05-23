@@ -10,8 +10,9 @@ export default function App() {
 
     function enviarUsuario(e) {
         e.preventDefault();
-        // const url = "https://poc-buffer.herokuapp.com/usuarios";
-        const url = "http://localhost:5000/usuarios";
+
+        const url = "https://poc-buffer.herokuapp.com/usuarios";
+        // const url = "http://localhost:5000/usuarios";
         const promise = axios.post(url, { nome, idade: parseInt(idade) });
         promise.then(response => {
             alert(response.data);
@@ -27,14 +28,18 @@ export default function App() {
         data.append("idade", idade);
         data.append("foto", foto);
 
-        const promise = axios.post("http://localhost:5000/usuarios", data);
+        const url = "https://poc-buffer.herokuapp.com/usuarios";
+        // const url = "http://localhost:5000/usuarios";
+        const promise = axios.post(url, data);
         promise.then(res => console.log(res));
         promise.catch(err => console.log(err));
     }
 
     function baixarLista() {
-        console.log(foto)
-        const url = "http://localhost:5000/usuarios";
+        console.log(foto);
+
+        const url = "https://poc-buffer.herokuapp.com/usuarios";
+        // const url = "http://localhost:5000/usuarios";
         const promise = axios.get(url);
         promise.then(response => {
             setListaDeUsuarios(response.data);
